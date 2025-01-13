@@ -1,3 +1,4 @@
+<?php
 class Gobac_Settings {
     public function register_settings() {
         // General Settings

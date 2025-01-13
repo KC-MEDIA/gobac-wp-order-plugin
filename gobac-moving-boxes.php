@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Gobac Moving Boxes Wizard
+Plugin Name: Gobac Moving Boxes - custom plugin
 Description: Multi-step form for box rental service. Requires WooCommerce to be installed and activated.
 Version: 1.0
 Author: @Ferpk
@@ -26,13 +26,19 @@ class GobacMovingBoxes {
 
     private function __construct() {
         // Enhanced WooCommerce dependency check
-        if (!class_exists('WooCommerce')) {
+        $plugin_path = trailingslashit(WP_PLUGIN_DIR) . 'woocommerce/woocommerce.php';
+        
+        if (
+            !in_array($plugin_path, wp_get_active_and_valid_plugins())
+            && !in_array($plugin_path, wp_get_active_network_plugins())
+        ) {
             add_action('admin_notices', array($this, 'woocommerce_missing_notice'));
             add_action('admin_init', array($this, 'deactivate_self'));
             return;
         }
 
-        $this->init();
+        // Wait for WooCommerce to fully initialize
+        add_action('woocommerce_init', array($this, 'init'));
     }
 
     public function woocommerce_missing_notice() {
@@ -69,6 +75,10 @@ class GobacMovingBoxes {
         if (!$this->check_wc_version()) {
             return;
         }
+
+        // Add settings class
+        $settings = new Gobac_Settings();
+        $settings->register_settings();
 
         // Enqueue scripts and styles
         add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
