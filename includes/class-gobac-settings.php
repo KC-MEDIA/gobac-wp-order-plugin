@@ -1,5 +1,9 @@
 <?php
 class Gobac_Settings {
+    public function __construct() {
+        add_action('admin_init', array($this, 'register_settings'));
+    }
+    
     public function register_settings() {
         // General Settings
         register_setting('gobac_options', 'gobac_delivery_zones');
