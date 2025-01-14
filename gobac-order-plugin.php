@@ -53,8 +53,8 @@ class GobacMovingBoxes {
         // Add submenus
         add_submenu_page(
             'gobac-moving-boxes',         // Parent slug
-            'Products',                   // Page title
-            'Products',                   // Menu title
+            'Products Config',            // Page title
+            'Products Config',            // Menu title
             'manage_options',             // Capability
             'gobac-products',             // Menu slug
             array($this, 'render_products_page')
